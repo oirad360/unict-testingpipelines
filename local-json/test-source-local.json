@@ -1,0 +1,9 @@
+{
+    "items":[
+        {
+            "key": "movies",
+            "version": "2.0.0",
+            "source": "./movies.json"
+        }
+      ]
+}

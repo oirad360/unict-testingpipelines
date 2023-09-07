@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  jmeter:
+    build:
+      context: .
+      dockerfile: jmeter/Dockerfile
+    container_name: ${container_name:-jmeter}
+    volumes:
+      - ./testplans:/testplans
+      - ./test-results/:/test-results
+      - ./test-results/${testName:-default}/:/test-results/${testName:-default}/
+    command: sh -c "cp ../../testplans/${properties:-additional.properties} ../../test-results/${testName:-default}/properties_${testName:-default}.txt && jmeter -n -t /testplans/${testplanName:-repeatedOneRequest}.jmx -q /testplans/${properties:-additional.properties} -l /test-results/${testName:-default}/results_${testName:-default}.csv -e -f -o  /test-results/${testName:-default}/dashboard/"
+    depends_on:
+      registry-service-C1-1:
+        condition: service_healthy

@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  get_stats:
+    build:
+      context: .
+      dockerfile: get_stats/Dockerfile
+    container_name: ${container_name:-get_stats}
+    env_file:
+      - get_stats/env_file.txt
+    volumes:
+      - ./test-results/:/test-results
+      - ./get_stats/containers_list.txt:/containers_list.txt:ro
+    command: python3 get_stats.py /test-results/${testName:-default} test-results/${pdfPath:-default}.pdf ${appendPdf:-true} "${info:-""}"
+    depends_on:
+      jmeter:
+        condition: service_completed_successfully

@@ -1,0 +1,10 @@
+unict-testingpipelines_registry-service-A_1
+unict-testingpipelines_registry-service-B1_1
+unict-testingpipelines_registry-service-B2_1
+unict-testingpipelines_registry-service-B3_1
+unict-testingpipelines_registry-service-C1-1_1
+unict-testingpipelines_registry-service-C1-2_1
+unict-testingpipelines_registry-service-C2-1_1
+unict-testingpipelines_registry-service-C2-2_1
+unict-testingpipelines_registry-service-C3-1_1
+unict-testingpipelines_registry-service-C3-2_1

@@ -1,0 +1,21 @@
+{
+  "name": "A",
+  "url": "http://registry-service-A:8080",
+  "failedItemTTL": 25,
+  "upstreams": [],
+  "buckets": [
+    {
+      "name": "services",
+      "store": {
+        "type": "memory-mutable",
+        "items": [
+          {
+            "tags": ["api"],
+            "key": "keyA",
+            "value": "value01"
+          }
+        ]
+      }
+    }
+  ]
+}

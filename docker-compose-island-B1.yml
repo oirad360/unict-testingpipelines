@@ -1,0 +1,105 @@
+version: "3.8"
+services:
+  registry-service-B1:
+    image: ts-one-front-docker-repo.ts-paas.com/registry-service:${IMG_VERSION}
+    volumes:
+      - ./meta/registry-config-B1.json:/var/lib/meta/registry-config.json
+    environment:
+      META_SOURCE: registry-config.json
+      DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT: "yes"
+      DANGEROUSLY_ENABLE_CACHE_INFO: "yes"
+      DANGEROUSLY_DISABLE_JSON_LOGS: "no"
+      LOG_LEVEL: "${LOG_LEVEL}"
+      DANGEROUSLY_SKIP_ENABLE_DOWSTREAM_VERIFY: "yes"
+      DANGEROUSLY_DISABLE_CACHE_LOCAL_ITEM: "no"
+      BUSINESS_UNIT: "OneFront"
+      ISLAND: "ISLAND-B1"
+      MODULE: "ISLAND-B1"
+      DOWNSTREAM_PRIORITY_RULES: '[
+        { "key": "http://registry-service-Ci-n:8080", "value": 0 }]'
+    depends_on:
+      registry-service-A:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "-qO",
+          "-",
+          "http://registry-service-B1:8080/healthz",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    deploy:
+      replicas: 1
+    expose:
+    - "8080"
+    # ports:
+    #   - "<port>:8080"
+
+  registry-service-C1-1:
+    image: ts-one-front-docker-repo.ts-paas.com/registry-service:${IMG_VERSION}
+    volumes:
+      - ./meta/registry-config-C1-1.json:/var/lib/meta/registry-config.json
+    environment:
+      META_SOURCE: registry-config.json
+      DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT: "yes"
+      DANGEROUSLY_ENABLE_CACHE_INFO: "yes"
+      BUSINESS_UNIT: "OneFront"
+      ISLAND: "ISLAND-B1"
+      MODULE: "Module-C1-1"
+      DANGEROUSLY_DISABLE_JSON_LOGS: "no"
+      LOG_LEVEL: "${LOG_LEVEL}"
+      DANGEROUSLY_SKIP_ENABLE_DOWSTREAM_VERIFY: "yes"
+      DANGEROUSLY_DISABLE_CACHE_LOCAL_ITEM: "no"
+    depends_on:
+      registry-service-B1:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD", "wget", "-qO", "-", "http://registry-service-C1-1:8080/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    deploy:
+      replicas: 1
+    expose:
+      - "8080"
+    # ports:
+    #   - "<port>:8080"
+
+  registry-service-C1-2:
+    image: ts-one-front-docker-repo.ts-paas.com/registry-service:${IMG_VERSION}
+    volumes:
+      - ./meta/registry-config-C1-2.json:/var/lib/meta/registry-config.json
+    environment:
+      META_SOURCE: registry-config.json
+      DANGEROUSLY_ENABLE_FASTIFY_TDD_ENDPOINT: "yes"
+      DANGEROUSLY_ENABLE_CACHE_INFO: "yes"
+      BUSINESS_UNIT: "OneFront"
+      ISLAND: "ISLAND-B1"
+      MODULE: "Module-C1-2"
+      DANGEROUSLY_DISABLE_JSON_LOGS: "no"
+      LOG_LEVEL: "${LOG_LEVEL}"
+      DANGEROUSLY_SKIP_ENABLE_DOWSTREAM_VERIFY: "yes"
+      DANGEROUSLY_DISABLE_CACHE_LOCAL_ITEM: "no"
+    depends_on:
+      registry-service-B1:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test:
+        ["CMD", "wget", "-qO", "-", "http://registry-service-C1-2:8080/healthz"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    deploy:
+      replicas: 1
+    expose:
+      - "8080"
+    # ports:
+    #   - "<port>:8080"
